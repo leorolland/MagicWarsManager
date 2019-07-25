@@ -9,8 +9,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.freebuildserver.events.JoinLeaveEvent;
 import com.freebuildserver.plotManager.db.DBConnection;
+import com.freebuildserver.plotManager.events.JoinLeaveEvent;
 import com.github.intellectualsites.plotsquared.api.PlotAPI;
 
 public class PlotManagerPlugin extends JavaPlugin {

@@ -1,4 +1,4 @@
-package com.freebuildserver.events;
+package com.freebuildserver.plotManager.events;
 
 import java.time.Duration;
 
