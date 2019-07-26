@@ -1,4 +1,4 @@
-package com.freebuildserver.plotManager.db;
+package net.magicwars.manager.db;
 
 import java.time.Duration;
 import java.time.Instant;

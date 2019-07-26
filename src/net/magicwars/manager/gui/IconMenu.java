@@ -1,4 +1,4 @@
-package com.freebuildserver.plotManager.gui;
+package net.magicwars.manager.gui;
 
 import java.util.Arrays;
 

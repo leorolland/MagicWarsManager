@@ -1,13 +1,12 @@
-name: FB-PlotManager
-main: com.freebuildserver.plotManager.PlotManagerPlugin
+name: MagicWarsManager
+main: net.magicwars.manager.MagicWarsManager
 version: 0.1
-api-version: 1.13
+api-version: 1.14
 depend:
-- PlotSquared
 commands:
-  menu:
-    description: Ouvre le menu des plots
-    usage: /menu
-  manager:
-    description: Commandes admin pour FB-PlotManager
-    usage: /manager
+   manager:
+      description: Commandes admin
+      usage: /manager
+   mkit:
+      description: Distribue un kit a un joueur
+      usage: /mkit <kit> <username>

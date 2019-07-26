@@ -1,22 +1,17 @@
-package com.freebuildserver.plotManager;
+package net.magicwars.manager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.freebuildserver.plotManager.db.DBConnection;
-import com.freebuildserver.plotManager.events.JoinLeaveEvent;
-import com.github.intellectualsites.plotsquared.api.PlotAPI;
+import net.magicwars.manager.db.DBConnection;
+import net.magicwars.manager.events.JoinLeaveEvent;
+import net.magicwars.manager.executors.ManagerExecutor;
+import net.magicwars.manager.executors.MkitExecutor;
 
-public class PlotManagerPlugin extends JavaPlugin {
+public class MagicWarsManager extends JavaPlugin {
 
-	public static String pluginName = "FB-PlotManager";
-	public PlotAPI api;
+	public static String pluginName = "MagicWarsManager";
 	public PluginManager pm;
 	public DBConnection db;
 
@@ -24,7 +19,6 @@ public class PlotManagerPlugin extends JavaPlugin {
 	public void onEnable() {
 		pm = getServer().getPluginManager(); // On récupère le PluginManager du serveur
 		db = new DBConnection(this);
-		this.hookPlotSquarred();
 		this.hookExecutors();
 		pm.registerEvents(new JoinLeaveEvent(db), this);
 	}
@@ -34,22 +28,12 @@ public class PlotManagerPlugin extends JavaPlugin {
 
 	}
 
-	private void hookPlotSquarred() {
-		final Plugin plotsquared = pm.getPlugin("PlotSquared");
-		if (plotsquared != null && !plotsquared.isEnabled()) {
-			Bukkit.getLogger().warning("Désactivation de " + pluginName);
-			this.pm.disablePlugin(this);
-			return;
-		}
-		api = new PlotAPI();
-	}
 
 	private void hookExecutors() {
-		CommandExecutor cmdExecutor = new CmdExecutor(this, api, db);
-		CommandExecutor managerExecutor = new ManagerExecutor(this, db);
-		getCommand("menu").setExecutor(cmdExecutor);
-		getCommand("manager").setExecutor(managerExecutor);
-
+		CommandExecutor managerE = new ManagerExecutor(this, db);
+		getCommand("manager").setExecutor(managerE);
+		CommandExecutor mkitE = new MkitExecutor(this, db);
+		getCommand("mkit").setExecutor(mkitE);
 	}
 
 }

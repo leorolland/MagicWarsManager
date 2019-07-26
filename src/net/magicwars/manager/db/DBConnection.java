@@ -1,4 +1,4 @@
-package com.freebuildserver.plotManager.db;
+package net.magicwars.manager.db;
 
 import org.bukkit.plugin.Plugin;
 import org.mongodb.morphia.Datastore;
@@ -52,6 +52,5 @@ public class DBConnection {
 		return playerDAO;
 	}
 
-	
 	
 }

@@ -1,18 +1,19 @@
-package com.freebuildserver.plotManager;
+package net.magicwars.manager.executors;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.freebuildserver.plotManager.db.AsyncCallback;
-import com.freebuildserver.plotManager.db.DBConnection;
-import com.freebuildserver.plotManager.db.PlayerDTO;
+import net.magicwars.manager.db.AsyncCallback;
+import net.magicwars.manager.db.DBConnection;
+import net.magicwars.manager.db.PlayerDTO;
 
 public class ManagerExecutor implements CommandExecutor {
 
