@@ -9,4 +9,4 @@ commands:
       usage: /manager
    mkit:
       description: Distribue un kit a un joueur
-      usage: /mkit <kit> <username>
+      usage: /mkit <kit> <username> 

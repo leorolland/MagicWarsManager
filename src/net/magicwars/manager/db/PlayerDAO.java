@@ -62,7 +62,6 @@ public class PlayerDAO extends BasicDAO<PlayerDTO, String> {
 		final Instant begin = Instant.now();
 		final PlayerDAO that = this;
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				PlayerDTO pd = getPlayerSync(p);
 				callback.callback(pd, Duration.between(begin, Instant.now()));
@@ -74,7 +73,6 @@ public class PlayerDAO extends BasicDAO<PlayerDTO, String> {
 		final PlayerDAO that = this;
 		final Instant begin = Instant.now();
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
             public void run() {
             	PlayerDTO pd = updatePlayerSync(p);
         		callback.callback(pd, Duration.between(begin, Instant.now()));
@@ -86,7 +84,6 @@ public class PlayerDAO extends BasicDAO<PlayerDTO, String> {
 		final Instant begin = Instant.now();
 		final PlayerDAO that = this;
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-			@Override
 			public void run() {
 				Optional<PlayerDTO> opt = getPlayerSync(p);
 				callback.callback(opt, Duration.between(begin, Instant.now()));

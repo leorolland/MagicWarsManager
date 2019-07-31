@@ -15,6 +15,7 @@ public class DBConnection {
 	private MongoClient mc;
     private Datastore datastore;
     private PlayerDAO playerDAO;
+    private KitDAO kitDAO;
     
 	private Plugin plugin;
 
@@ -38,6 +39,7 @@ public class DBConnection {
         datastore.ensureIndexes();
 
         playerDAO = new PlayerDAO(PlayerDTO.class, datastore, plugin);
+        kitDAO = new KitDAO(KitDTO.class, datastore, plugin);
 		
 //		// Get the database called "mcserver"
 //		// If it does not exist it will be created automatically
@@ -50,6 +52,10 @@ public class DBConnection {
 
 	public PlayerDAO getPlayerDAO() {
 		return playerDAO;
+	}
+	
+	public KitDAO getKitDAO() {
+		return kitDAO;
 	}
 
 	

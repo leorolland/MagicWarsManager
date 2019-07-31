@@ -41,7 +41,6 @@ public class JoinLeaveEvent implements Listener {
 		final Player p = event.getPlayer();
 		event.setJoinMessage(p.getDisplayName() + ChatColor.YELLOW + " a rejoint le serveur FB !");
 		db.getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
-			@Override
 			public void callback(PlayerDTO output, Duration elapsed) {
 				System.out.println(ChatColor.GOLD + "[FB-PlotManager] updatePlayerAsync(" + p.getName() + ") a duré "
 						+ elapsed.toMillis() + "ms.");
@@ -54,7 +53,6 @@ public class JoinLeaveEvent implements Listener {
 		final Player p = event.getPlayer();
 		event.setQuitMessage(p.getDisplayName() + ChatColor.RED + " a quitté le serveur FB !");
 		db.getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
-			@Override
 			public void callback(PlayerDTO output, Duration elapsed) {
 				System.out.println(ChatColor.GOLD + "[FB-PlotManager] updatePlayerAsync(" + p.getName() + ") a duré "
 						+ elapsed.toMillis() + "ms.");

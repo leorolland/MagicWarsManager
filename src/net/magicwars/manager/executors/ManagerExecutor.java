@@ -26,7 +26,6 @@ public class ManagerExecutor implements CommandExecutor {
 		this.db = db;
 	}
 
-	@Override
 	public boolean onCommand(final CommandSender sender, Command cmd, String label, final String[] args) {
 		if (args.length > 0) {
 			if (args[0].equals("info")) {
@@ -34,7 +33,6 @@ public class ManagerExecutor implements CommandExecutor {
 				if (args.length == 2) {
 					// Un autre que le joueur pseudo est entré
 					db.getPlayerDAO().getPlayerAsync(args[1], new AsyncCallback<Optional<PlayerDTO>>() {
-						@Override
 						public void callback(Optional<PlayerDTO> opd, Duration elapsed) {
 							if (opd.isPresent()) {
 								sendInformations(sender, opd.get());
@@ -48,7 +46,6 @@ public class ManagerExecutor implements CommandExecutor {
 					if (sender instanceof Player) {
 						// Le joueur concerné est le lanceur de la commande						
 						db.getPlayerDAO().getPlayerAsync((Player) sender, new AsyncCallback<PlayerDTO>() {
-							@Override
 							public void callback(PlayerDTO pd, Duration elapsed) {
 								sendInformations(sender, pd);
 								sender.sendMessage("("+elapsed.toMillis()+"ms)");
@@ -67,7 +64,6 @@ public class ManagerExecutor implements CommandExecutor {
 						sender.sendMessage("Ce joueur n'est pas connecté !");
 					} else {
 						db.getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
-							@Override
 							public void callback(PlayerDTO p, Duration elapsed) {
 								Instant end = Instant.now();
 								sender.sendMessage("Données du joueur mises à jour ! (" + elapsed.toMillis() +"ms)");
