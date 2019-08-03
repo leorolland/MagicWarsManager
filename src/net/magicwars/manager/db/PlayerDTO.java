@@ -3,16 +3,19 @@ package net.magicwars.manager.db;
 import java.util.Date;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
+import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.IndexOptions;
 
 @Entity(value="players", noClassnameStored = true)
 public class PlayerDTO {
 	
 	@Id
-    private int id;
+    @Property("id")
+    protected ObjectId id;
 	
 	@Indexed(options = @IndexOptions(unique = true))
 	private String uuid;
@@ -30,16 +33,9 @@ public class PlayerDTO {
 	
 	private Map<String, String> location;
 	
-	// GETTERS AND SETTERS
+	private Map<String, Long> xpClasses;
 	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	// GETTERS AND SETTERS
 	public String getUuid() {
 		return uuid;
 	}
@@ -96,4 +92,12 @@ public class PlayerDTO {
 		this.location = location;
 	}
 
+	public Map<String, Long> getXpClasses() {
+		return xpClasses;
+	}
+
+	public void setXpClasses(Map<String, Long> xpClasses) {
+		this.xpClasses = xpClasses;
+	}
+	
 }

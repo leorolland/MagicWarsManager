@@ -4,26 +4,21 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
+import net.magicwars.manager.MagicWarsManager;
 import net.magicwars.manager.db.AsyncCallback;
 import net.magicwars.manager.db.DBConnection;
 import net.magicwars.manager.db.PlayerDTO;
 
 public class ManagerExecutor implements CommandExecutor {
 
-	private DBConnection db;
+	private MagicWarsManager plugin;
 
-	private Plugin plugin;
-
-	public ManagerExecutor(Plugin plugin, DBConnection db) {
+	public ManagerExecutor(MagicWarsManager plugin) {
 		this.plugin = plugin;
-		this.db = db;
 	}
 
 	@Override
@@ -33,7 +28,7 @@ public class ManagerExecutor implements CommandExecutor {
 				
 				if (args.length == 2) {
 					// Un autre que le joueur pseudo est entré
-					db.getPlayerDAO().getPlayerAsync(args[1], new AsyncCallback<Optional<PlayerDTO>>() {
+					plugin.getDb().getPlayerDAO().getPlayerAsync(args[1], new AsyncCallback<Optional<PlayerDTO>>() {
 						@Override
 						public void callback(Optional<PlayerDTO> opd, Duration elapsed) {
 							if (opd.isPresent()) {
@@ -47,7 +42,7 @@ public class ManagerExecutor implements CommandExecutor {
 				} else {
 					if (sender instanceof Player) {
 						// Le joueur concerné est le lanceur de la commande						
-						db.getPlayerDAO().getPlayerAsync((Player) sender, new AsyncCallback<PlayerDTO>() {
+						plugin.getDb().getPlayerDAO().getPlayerAsync((Player) sender, new AsyncCallback<PlayerDTO>() {
 							@Override
 							public void callback(PlayerDTO pd, Duration elapsed) {
 								sendInformations(sender, pd);
@@ -66,7 +61,7 @@ public class ManagerExecutor implements CommandExecutor {
 					if (p == null) {
 						sender.sendMessage("Ce joueur n'est pas connecté !");
 					} else {
-						db.getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
+						plugin.getDb().getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
 							@Override
 							public void callback(PlayerDTO p, Duration elapsed) {
 								Instant end = Instant.now();

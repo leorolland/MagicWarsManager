@@ -10,3 +10,12 @@ commands:
    mkit:
       description: Distribue un kit a un joueur
       usage: /mkit <kit> <username> 
+   match:
+      description: Matchmaking
+      usage: /match 
+   arena:
+      description: Gerer les arenes
+      usage: /arena 
+   levels:
+      description: Gerer les niveaux
+      usage: /arena 

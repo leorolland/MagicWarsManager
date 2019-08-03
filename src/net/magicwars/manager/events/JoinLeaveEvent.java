@@ -21,45 +21,70 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.plugin.Plugin;
 
+import net.magicwars.manager.MagicWarsManager;
 import net.magicwars.manager.db.AsyncCallback;
 import net.magicwars.manager.db.DBConnection;
 import net.magicwars.manager.db.PlayerDTO;
+import net.magicwars.manager.matchmaking.Lobby;
 
 import org.bukkit.entity.EntityType;
 
 public class JoinLeaveEvent implements Listener {
 
-	DBConnection db;
+	private MagicWarsManager plugin;
 
-	public JoinLeaveEvent(DBConnection db) {
-		this.db = db;
+	public JoinLeaveEvent(MagicWarsManager plugin) {
+		this.plugin = plugin;
 	}
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		final Player p = event.getPlayer();
-		event.setJoinMessage(p.getDisplayName() + ChatColor.YELLOW + " a rejoint le serveur FB !");
-		db.getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
+		event.setJoinMessage(p.getDisplayName() + ChatColor.YELLOW + " a rejoint le serveur");
+		plugin.getDb().getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
 			@Override
 			public void callback(PlayerDTO output, Duration elapsed) {
-				System.out.println(ChatColor.GOLD + "[FB-PlotManager] updatePlayerAsync(" + p.getName() + ") a duré "
+				System.out.println(ChatColor.GOLD + "[MWManager] updatePlayerAsync(" + p.getName() + ") a duré "
 						+ elapsed.toMillis() + "ms.");
 			}
 		});
+		// Téléportation du joueur au spawn
+		plugin.getLobby().respawnPlayer(p);
+		plugin.getLobby().clearPlayer(p);
 	}
 
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		final Player p = event.getPlayer();
-		event.setQuitMessage(p.getDisplayName() + ChatColor.RED + " a quitté le serveur FB !");
-		db.getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
+		event.setQuitMessage(p.getDisplayName() + ChatColor.RED + " a quitté le serveur");
+		plugin.getDb().getPlayerDAO().updatePlayerAsync(p, new AsyncCallback<PlayerDTO>() {
 			@Override
 			public void callback(PlayerDTO output, Duration elapsed) {
-				System.out.println(ChatColor.GOLD + "[FB-PlotManager] updatePlayerAsync(" + p.getName() + ") a duré "
+				System.out.println(ChatColor.GOLD + "[MWManager] updatePlayerAsync(" + p.getName() + ") a duré "
 						+ elapsed.toMillis() + "ms.");
 			}
 		});
+
+		// Si le joueur était dans une partie, on l'exclue
+		if (plugin.getLobby().getPlayers().contains(p)) {
+			plugin.getLobby().kickPlayer(p, "Vous avez quitté la partie.");
+		}
+	}
+
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		final Player p = event.getPlayer();
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				// Si le joueur était dans une partie, on le remet
+				if (plugin.getLobby().getPlayers().contains(p)) {
+					plugin.getLobby().respawnPlayer(p);
+				}
+			}
+		}, 1);
 	}
 
 }

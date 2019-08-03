@@ -6,6 +6,9 @@ import org.mongodb.morphia.Morphia;
 
 import com.mongodb.MongoClient;
 
+import net.magicwars.manager.MagicWarsManager;
+import net.magicwars.manager.events.LevelsEvents;
+
 public class DBConnection {
 
 	private final String ip = "127.0.0.1";
@@ -15,12 +18,12 @@ public class DBConnection {
 	private MongoClient mc;
     private Datastore datastore;
     private PlayerDAO playerDAO;
+    private ArenaDAO arenaDAO;
     
-	private Plugin plugin;
+	private MagicWarsManager plugin;
 
-	public DBConnection(Plugin plugin) {
+	public DBConnection(MagicWarsManager plugin) {
 		this.plugin = plugin;
-		
 		try {
 			mc = new MongoClient(ip, port);
 		} catch (Exception e) {
@@ -33,11 +36,14 @@ public class DBConnection {
 		morphia = new Morphia();
 		
 		morphia.map(PlayerDTO.class);
-
+		morphia.map(ArenaDTO.class);
+		morphia.getMapper().getOptions().setStoreEmpties(true); // avoid [org.mongodb.morphia.mapping.Mapper] converted {} to null
+		
         datastore = morphia.createDatastore(mc, "minecraft");
         datastore.ensureIndexes();
 
-        playerDAO = new PlayerDAO(PlayerDTO.class, datastore, plugin);
+        playerDAO = new PlayerDAO(PlayerDTO.class, datastore, plugin, plugin.getLe());
+        arenaDAO = new ArenaDAO(ArenaDTO.class, datastore, plugin);
 		
 //		// Get the database called "mcserver"
 //		// If it does not exist it will be created automatically
@@ -51,6 +57,8 @@ public class DBConnection {
 	public PlayerDAO getPlayerDAO() {
 		return playerDAO;
 	}
-
+	public ArenaDAO getArenaDAO() {
+		return arenaDAO;
+	}
 	
 }
